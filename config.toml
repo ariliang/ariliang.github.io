@@ -1,0 +1,35 @@
+baseURL = "ariliang.me"
+languageCode = "zh-cn"
+title = "Ari's home"
+theme = "ezhil"
+
+pygmentsstyle = "solarized-dark"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+
+[params]
+    mode = "auto"
+
+[[menu.main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[menu.main]]
+name = "Posts"
+url = "/posts"
+weight = 2
+
+[[menu.main]]
+name = "Tags"
+url = "/tags"
+weight = 3
+
+[[menu.main]]
+name = "About"
+url = "/about"
+weight = 4
+
+# Enable tags.
+[taxonomies]
+   tag = "tags"

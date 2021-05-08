@@ -1,0 +1,5 @@
+.vscode/
+*.swp
+
+gh-pages
+gh-pages.pub
