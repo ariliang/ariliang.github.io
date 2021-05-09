@@ -16,6 +16,7 @@ summaryLength = 10
     customJS = ["https://code.jquery.com/jquery-3.4.1.js"]
 
     toc = true
+    favicon = "favicon.jpeg"
 
 
 [[menu.main]]
