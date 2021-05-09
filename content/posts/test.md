@@ -15,7 +15,7 @@ paragraph *italic* **bold**
 
 # Katex
 
-$ softmax = \frac{e^{p_j}}{\sum_i e^{p_i}}$
+$$ softmax = \frac{e^{p_j}}{\sum_i e^{p_i}}$$
 
 # Code
 
