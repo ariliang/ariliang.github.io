@@ -9,6 +9,8 @@ pygmentscodefencesguesssyntax = true
 
 [params]
     mode = "auto"
+    math = true
+
 
 [[menu.main]]
 name = "Home"
@@ -33,3 +35,16 @@ weight = 4
 # Enable tags.
 [taxonomies]
    tag = "tags"
+
+[markup]
+  [markup.highlight]
+    codeFences = true
+    guessSyntax = true
+    lineNos = true
+    lineNumbersInTable = false
+    style = "monokai"
+    tabWidth = 4
+    noClasses = true
+    hl_Lines = ""
+    lineAnchors = ""
+    anchorLineNos = false
