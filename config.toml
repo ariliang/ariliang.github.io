@@ -13,6 +13,8 @@ pygmentscodefencesguesssyntax = true
 
     customJS = ["https://code.jquery.com/jquery-3.4.1.js"]
 
+    toc = true
+
 
 [[menu.main]]
 name = "Home"
@@ -50,3 +52,8 @@ weight = 4
     hl_Lines = ""
     lineAnchors = ""
     anchorLineNos = false
+
+  [markup.tableOfContents]
+    endLevel = 4
+    ordered = false
+    startLevel = 2
