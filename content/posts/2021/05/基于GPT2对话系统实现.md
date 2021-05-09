@@ -1,7 +1,7 @@
 ---
 title: "基于GPT2对话系统实现"
 date: 2021-05-09T21:43:14+08:00
-summary: "summary"
+summary: "对话系统、对话生成，就是要给定一句话，系统根据历史上下文对这句话进行回复"
 draft: false
 tags: [GPT2, NLP, Dialogue System]
 ---
@@ -104,7 +104,7 @@ convb
 
 **Temperture**，$p_j \propto \frac{\exp(p_j / T)}{\sum_i \exp(p_i/T)}$，通过调节Temperture可对全体概率进行平滑或者锐化
 
-**Penalty**，每次生成一个词后，我们可以添加一个惩罚项，对这个词的概率进行处理，使其减少重复，如 $p_j = \frac{\exp(p_j / T / Penalty)}{\sum_i \exp(p_i/T/Penalty)}, \text{ where i, j has been sampled}$
+**Penalty**，每次生成一个词后，我们可以添加一个惩罚项，对这个词的概率进行处理，使其减少重复，如 $p_j = \frac{\exp(p_j / T / Penalty)}{\sum_i \exp(p_i/T/Penalty)}$, where $i, j$ has been sampled
 
 > 这些采样方式通常可以组合，比如先选取Top-P取概率超过一定阈值的样本，再使用Top-K取前K个，再随机选取一个
 

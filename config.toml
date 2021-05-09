@@ -7,6 +7,8 @@ pygmentsstyle = "solarized-dark"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
 
+summaryLength = 10
+
 [params]
     mode = "auto"
     math = true
@@ -57,3 +59,9 @@ weight = 4
     endLevel = 4
     ordered = false
     startLevel = 2
+
+
+[[params.social]]
+name = "Github"
+icon = "github"
+url = "https://github.com/ariliang"
