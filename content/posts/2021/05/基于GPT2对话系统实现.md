@@ -1,12 +1,33 @@
 ---
 title: "基于GPT2对话系统实现"
 date: 2021-05-09T21:43:14+08:00
-summary: "对话系统、对话生成，就是要给定一句话，系统根据历史上下文对这句话进行回复"
+summary: "对话系统、对话生成，就是给定一句话，系统根据历史上下文对这句话进行回复"
 draft: false
-tags: [GPT2, NLP, Dialogue System]
+tags: [GPT2, Dialogue System, NLP]
 ---
 
 ## 简介
+
+### NLP一般过程
+
+自从预训练模型BERT(Bidirectional Encoder Representation for Transformer)诞生后，当前大多采用大规模通用语料如网页、维基百科，来训练预训练模型(Pretrained Model)，然后再根据下游任务对预训练模型进行精调(Fine Tuning)，这样的方式在许多任务上的表现非常好。
+
+> 精调是个宽泛的说法，通常包括几种方式：不改变模型，只改变数据；根据任务只改变输出层，模型大体不动；对模型做出修改等
+
+这里有几个注意的点：
+
+1. 预训练模型普遍采用编码解码(Encoder-Decoder)模式，这也是一个广泛的说法。广义上指对数据$x$进行处理变成了中间态$z$：如把原始数据做Embedding、对数据处理后得到hidden output，相当于对数据进行了编码；然后对这些编码结果再进行处理，变成了我们想要的结果$y$，这类似与解码的过程。
+2. 狭义上指使用了Transformer结构的模型，它包含了具体的Encoder跟Decoder部分，而BERT使用了Encoder部分，GPT使用了Decoder部分，所以上面说BERT含义大概是是双向的Transformer的Encoder表示
+{{< figure alt="transformer" src="images/基于GPT2对话系统实现/transformer-encoder-decoder.png" width="75%" >}}
+3. Transformer采用注意力机制(Attention)，所谓注意力机制就是在一个句子中，基本的单位如字、词对另外的字或词是否可见、是否能注意到其它字词，相互是否能得到一个影响，如用概率大小来表示。注意到Encoder跟Decoder的Attention的差别
+{{< figure alt="encoder" src="images/基于GPT2对话系统实现/transformer-encoder-block-2.png" width="75%" >}}
+{{< figure alt="decoder" src="images/基于GPT2对话系统实现/transformer-decoder-block-2.png" width="75%" >}}
+4. BERT使用了Self-Attention，而GPT使用了遮罩的注意力机制(Masked Self-Attetion)，只有后面的能注意到前面的
+{{< figure alt="self-attention" src="images/基于GPT2对话系统实现/self-attention-and-masked-self-attention.png" width="75%" >}}
+
+[Ref: Illustrated GPT2](http://jalammar.github.io/illustrated-gpt2/)
+
+### 语言建模
 
 对话系统、对话生成，就是要给定一句话，系统根据历史上下文对这句话进行回复。这是一个NLG(Natural Language Generation)任务，或者LM(Language Modeling)语言建模。
 
@@ -44,7 +65,6 @@ GPT2是一种自回归(Auto Regression, AR)模型，也称CLM(Casual Language Mo
 - token: 字或词，是模型处理的基本单位。要先把句子token化，然后转换成对应的id才能输入进模型，进行处理
 
 [Ref: Terms](https://huggingface.co/transformers/glossary.html)
-
 
 ## 任务理解
 
@@ -86,6 +106,49 @@ convb
 
 [Ref: OpenAI GPT2](https://huggingface.co/transformers/model_doc/gpt2.html#)
 
+### 项目结构
+
+因为代码里边参数的注释非常详细了，所以先只介绍整个大概的流程，以下是整个项目的结构
+
+```python
+project
+├── config
+│   └── args.py                     # 所有训练参数
+├── data
+│   ├── test_tokenized.txt          # 已处理的测试集
+│   ├── test.txt                    # 原始测试集
+│   ├── train_tokenized.txt
+│   └── train.txt
+├── logs                            # 日志目录
+├── model
+│   ├── model_config_....json       # 模型的配置信息
+│   └── vocab_small.txt             # 字典
+├── output
+│   ├── dialogue_model
+│   │   └── model_epoch1            # 训练好的模型;
+│   │       ├── config.json         # 包含模型本身与配置文件
+│   │       └── pytorch_model.bin
+│   ├── mmi_model                   # 若开起了mmi，则输出mmi模型
+│   │   └── model_epoch1
+│   │       ├── config.json
+│   │       └── pytorch_model.bin
+│   ├── sample
+│   │   └── output_test.txt         # 测试集输入进模型的输出
+│   └── tensorboard_summary         # tensorborad输出
+├── src                             # 可以用来可视化训练过程
+│   └── chitchat_demo.png
+├── utils                           # 工具类
+│   ├── dataset.py                  # 包含
+│   ├── logger.py
+│   └── preprocess.py               # 预处理数据集，具体是将原始文本tokenize，
+├── generate_dialogue_subset.py     # 然后转换成id存储起来，以供后续快速加载
+├── interact_mmi.py
+├── interact.py                     # 交互式，就是跟系统对话的形式，测试模型
+├── test.py                         # 测试，输入测试集，包含对话，输出最后的答复
+└── train.py                        # 训练
+```
+
+
 ### 输入
 
 ### 输出
@@ -95,18 +158,13 @@ convb
 将一个长句子输入进模型后，会得到下一个字的概率，有不同的策略对这个字进行采样(Sampling)。若想要生成的句子最符合训练集情况，就选择概率最大，但这样会生成重复的句子，对于聊天机器人可能不太好；想要生成的句子具有多样性，可选取其他采样方式。
 
 **Greedy Search**，简单地取最大概率
-
 **Top-K**，选取前k个概率最大的样本，再随机取一个样本
-
 **Top-P**，选取概率超过一定阈值的样本，如0.9，再从这些样本中随机取一个
-
 **Beam Seach**，设置一个N值代表N个样本，对当前生成的选择概率最大的N个样本；在下一轮生成时，计算这N个样本与词表所有词组合后的概率值，再选择概率前N个值，如此往复，最后生成概率最大的N个句子
-
 **Temperture**，$p_j \propto \frac{\exp(p_j / T)}{\sum_i \exp(p_i/T)}$，通过调节Temperture可对全体概率进行平滑或者锐化
+**Penalty**，每次生成一个词后，我们可以添加一个惩罚项，对这个词的概率进行处理，使其减少重复，如 $p_j = \frac{\exp(p_j / T / Penalty)}{\sum_i \exp(p_i/T/Penalty)}, \text{ where i, j has been sampled}$
 
-**Penalty**，每次生成一个词后，我们可以添加一个惩罚项，对这个词的概率进行处理，使其减少重复，如 $p_j = \frac{\exp(p_j / T / Penalty)}{\sum_i \exp(p_i/T/Penalty)}$, where $i, j$ has been sampled
-
-> 这些采样方式通常可以组合，比如先选取Top-P取概率超过一定阈值的样本，再使用Top-K取前K个，再随机选取一个
+> 这些采样方式通常可以组合，比如先选取Top-P取概率超过一定阈值的样本，再使用Top-K取前K个，再随机选取某个样本
 
 ## 医疗对话系统改进
 
