@@ -1,0 +1,357 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>Java类库 - Ari's home</title><link rel=icon type=image/png href=favicon.jpeg><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:title" content="Java类库"><meta property="og:description" content="核心类与扩展类"><meta property="og:type" content="article"><meta property="og:url" content="https://ariliang.github.io/posts/2020/02/java%E7%B1%BB%E5%BA%93/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-02-20T23:47:27+08:00"><meta property="article:modified_time" content="2020-02-20T23:47:27+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Java类库"><meta name=twitter:description content="核心类与扩展类"><link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300" rel=stylesheet><link rel=stylesheet type=text/css media=screen href=https://ariliang.github.io/css/normalize.css><link rel=stylesheet type=text/css media=screen href=https://ariliang.github.io/css/main.css><link rel=stylesheet type=text/css href=https://ariliang.github.io/css/dark.css media="(prefers-color-scheme: dark)"><script src=https://ariliang.github.io/js/feather.min.js></script><script src=https://ariliang.github.io/js/main.js></script><script src=https://code.jquery.com/jquery-3.4.1.js></script></head><body><div class="container wrapper post"><div class=header><base href=https://ariliang.github.io/><h1 class=site-title><a href=https://ariliang.github.io/>Ari's home</a></h1><div class=site-description><nav class="nav social"><ul class=flat><a href=https://github.com/ariliang title=Github><i data-feather=github></i></a></ul></nav></div><nav class=nav><ul class=flat><li><a href=/>Home</a></li><li><a href=/posts>Posts</a></li><li><a href=/tags>Tags</a></li><li><a href=/about>About</a></li></ul></nav></div><div class=post-header><h1 class=title>Java类库</h1><div class=meta>Posted at &mdash; Feb 20, 2020</div></div><div class=post-toc><div class=toc-header>CATALOG</div><ul class=toc-h2><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#java%e6%a0%b8%e5%bf%83%e7%b1%bb class=toc-link>JAVA核心类</a></li><ul class=toc-h3><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#%e5%ad%97%e7%ac%a6%e4%b8%b2%e5%92%8c%e7%bc%96%e7%a0%81 class=toc-link>字符串和编码</a></li><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#stringbuilder class=toc-link>StringBuilder</a></li></ul><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#object class=toc-link>Object</a></li><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#%e5%ae%b9%e5%99%a8%e7%b1%bb class=toc-link>容器类</a></li><ul class=toc-h3><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#arrays class=toc-link>Arrays</a></li></ul><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#io class=toc-link>IO</a></li><ul class=toc-h3><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#filepath%e5%af%b9%e8%b1%a1 class=toc-link>File/Path对象</a></li><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#inputstreamoutputstream class=toc-link>InputStream/OutputStream</a></li><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#filter%e6%a8%a1%e5%bc%8f class=toc-link>Filter模式</a></li><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#%e8%af%bb%e5%8f%96classpath class=toc-link>读取classpath</a></li><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#%e5%ba%8f%e5%88%97%e5%8c%96 class=toc-link>序列化</a></li><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#readerwriter class=toc-link>Reader/Writer</a></li><li><a href=/posts/2020/02/java%E7%B1%BB%E5%BA%93/#printstreamprintwriter class=toc-link>PrintStream/PrintWriter</a></li></div><div class=markdown><h1 id=java类库>Java类库</h1><h2 id=java核心类>JAVA核心类</h2><h3 id=字符串和编码>字符串和编码</h3><ol><li><p>实际上字符串内部是用<code>char[]</code>来表示的</p><blockquote><p>比如<code>String s = new String(new char[] {'H', 'e', 'l', 'l', 'o', '!'});</code></p><p>它的内部的字段定义是<code>private final char[]</code>，所以字符串对象是恒定不变的</p></blockquote></li><li><p>字符串比较应该利用<code>equals()</code>而不是<code>==</code>，因为字符串是引用类型，<code>==</code>比较的是引用值</p></li></ol><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050">1</span>// 比较内容，利用==比较也为true，是因为编译器会自动把相同的字符串当作一个对象放入常量池，自然引用&#34;hello&#34;和引用s的引用值是相等的
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">2</span>String s = &#34;hello&#34;;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">3</span>boolean isEqual1 = &#34;hello&#34;.equals(s) ? true : false;	// true
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">4</span>boolean isEqual2 = &#34;hello&#34; == s ? true : false;			// true
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">5</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">6</span>// 比较内容，s与&#34;hello&#34;.toUpperCase()的引用不相同
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">7</span>String s = &#34;HELLO&#34;;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">8</span>boolean isEqual = &#34;hello&#34;.toUpperCase() == &#34;s&#34; ? true : false;	// false
+</code></pre></div><ol><li>常用方法</li></ol><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>&#34;Hello&#34;.equalsIgnoreCase(&#34;Hello&#34;);	// true，忽略大小写比较
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>&#34;Hello&#34;.contains(&#34;llo&#34;);			// true，是否包含某个子串，方法参数是CharSequence
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>&#34;Hello&#34;.indexOf(&#34;e&#34;);				// 1，子串的索引，由0开始
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>&#34;Hello&#34;.lastIndexOf(&#34;l&#34;);			// 3，最后一个字串的索引，0开始
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>&#34;Hello&#34;.startsWith(&#34;He&#34;);			// true，由某个字串开始
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>&#34;Hello&#34;.endsWith(&#34;lo&#34;);				// true，由某个字串结束
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>&#34; \nHello\r\t&#34;.trim();				// &#34;Hello&#34;，去除首尾空白字符
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>&#34;\u3000Hello\u3000&#34;.strip();		// &#34;Hello&#34;，去除首尾空白字符，包括其他语言的，&#39;\u3000&#39;是中文的空格
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>&#34; Hello &#34;.stripLeading();			// &#34;Hello &#34;，去除头部空白字符
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>&#34; Hello &#34;.stripEnding();			// &#34; Hello&#34;，去除尾部空白字符
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">15</span>&#34;&#34;.isEmpty();		// true
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">16</span>&#34;  \n&#34;.isBlank();	// true
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">17</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">18</span>&#34;Hello&#34;.subString(2);				// &#34;llo&#34;，提取2到末尾的字串，索引从0开始
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">19</span>&#34;Hello&#34;.subString(2, 4);			// &#34;ll&#34;，2到3字串，4之前
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">20</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">21</span>&#34;Hello&#34;.replace(&#39;l&#39;, &#39;w&#39;);			// &#34;hewwo&#34;，替换字符
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">22</span>&#34;Hello&#34;.replace(&#34;ll&#34;, &#34;~~&#34;);		// &#34;he~~o&#34;，所有&#34;ll&#34;替换为&#34;~~&#34;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">23</span>// 还有正则表达式的替换，待添加
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">24</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">25</span>String[] arr = &#34;A,B,C,D&#34;.split(&#34;\\,&#34;);	// [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;, &#34;D&#34;]，正则表达式来分割
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">26</span>String s = String.join(&#34;***&#34;, arr);		// &#34;A***B***C***D&#34;，拼接字符串
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">27</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">28</span>String.valueOf(123);	// 将其他类型转换为字符串
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">29</span>String.valueOf(35.43);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">30</span>String.valueOf(true);	// &#34;true&#34;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">31</span>String.valueOf(new Object());	//	类似java.lang.Object@636be97c
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">32</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">33</span>// String可以和char[]相互转换
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">34</span>char[] cs = &#34;Hello&#34;.toCharArray();	// String --&gt; char[]
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">35</span>String s = new String(cs);			// char[] --&gt; String
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">36</span>char[0] = &#39;X&#39;;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">37</span>System.out.println(s);		// &#34;Hello&#34;，修改了char[]后s并不会改变，因为两者是不同的对象。new String(char[]);是复制，若传入的对象有可能改变，那么是复制内容
+</code></pre></div><ol><li><p>字符编码</p><blockquote><ol><li>ASCII只有1个字节编码的范围是0<del>127(0000 0000</del>0111 1111)，高位始终为0</li><li>GB2312采用2字节，第一个高位始终为1以便和ASCII码区分(1000 0000 0000 0000 ~ 1111 1111 1111)</li><li>Unicode编码使用两个或更多字节，英文字符就是简单的在前面加00，因为这样会浪费空间，就出现了UTF-8，把固定长度的Unicode编码编程1~4字节的变长编码</li><li>UTF-8依靠高字节来确定一个字符究竟是几个字节，传输中容错能强，常用作传输编码</li><li>Java的String和char在内存中总是以Unicode表示</li></ol></blockquote><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>   // char类型实际上是两个字节的Unicode编码，可以手动把字符串转换为其他编码，转换后不再是char类型，而是byte型数组
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>   // 转换为byte[]类型的时候优先考虑UTF-8
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>   byte[] b1 = &#34;Hello&#34;.getBytes();		// 按ISO8859-1编码转换，不推荐
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>   byte[] b2 = &#34;Hello&#34;.getBytes(&#34;UTF-8&#34;);		// 按UTF-8转换
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>   byte[] b3 = &#34;Hello&#34;.getBytes(&#34;GBK&#34;);		// 按GBK转换
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>   byte[] b4 = &#34;Hello&#34;.getBytes(StandardCharsets.UTF_8);	// 按UTF-8转换
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>   // 将已知的byte型数组转化为String
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>   String s1 = new String(b3, &#34;GBK&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>String s2 = new String(b4, StandardCharsets.UTF_8);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>   // 早期的String内部由char[]实现，而现在内部是byte[]，因为许多情况下只有ASCII内容，而使用char[]会浪费内存，利用byte[]能够存储一个字节，更节约
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>   private final char[] value;  --&gt;  private final byte[] value;
+</code></pre></div></li></ol><h3 id=stringbuilder>StringBuilder</h3><ol><li>java对String做了特殊处理，可以直接使用<code>+</code>拼接字符串</li><li>构造复杂的字符串利用<code>StringBuilder</code></li></ol><h2 id=object>Object</h2><p>方法列表</p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050">1</span>// toString();	将内容输出为字符串
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">2</span>// equals();	判断是否逻辑相等
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">3</span>// hashCode();	计算instance的hash值
+</code></pre></div><h2 id=容器类>容器类</h2><h3 id=arrays>Arrays</h3><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050">1</span>// 将数值类型转化为字符串
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">2</span>Arrays.toString();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">3</span>Arrays.deepToString();	// 输出多维数组为字符串
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">4</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">5</span>// 排序，若是对基本类型数组排序，则改变了数组元素的的位置。
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">6</span>// 若是对引用类型排序，如字符串，则改变了索引的引用值
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">7</span>Arrays.sort();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">8</span>
+</code></pre></div><h2 id=io>IO</h2><ol><li><p>IO是指内存和外部硬盘，网络等的数据交换，以内存为中心；实际上在内存中以某种数据结构表示，如<code>byte[]</code>，<code>String</code></p></li><li><p>IO分为同步和异步，分别在包<code>java.io</code>和<code>java.nio</code>中；同步指必须在IO结束后才能继续后续步骤，异步指只是发出IO请求，立刻执行后续步骤</p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 同步IO
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>import java.io;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>/* 
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span> * 抽象类
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span> * 	InputStream/OutputStream, Reader/Writer
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span> * 实现类
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span> * 	FileInputStream/FileOutputStream, FileReader/FileWriter
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span> */
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>// 异步IO
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>import java.nio
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>/*
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">15</span> *	Path/Paths
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">16</span> *
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">17</span> */
+</code></pre></div></li></ol><h3 id=filepath对象>File/Path对象</h3><p>利用<code>File</code>来操作文件和目录，<code>File</code>既可以表示文件，也可以表示目录；构造<code>File</code>时只是构造对象，不会进行任何IO操作，所以不会报错。而在调用的时候，才会有磁盘操作</p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 要构造一个File对象需要传入文件/目录路径，可以是绝对路径，也可以是相对路径
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>File f1 = new File(&#34;D:\\Downloads&#34;);	// Win下，绝对路径
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>File f2 = new File(&#34;/home/user&#34;);		// unix下
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>System.out.println(File.separator)		// 返回当前OS分隔符
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>File f3 = new File(&#34;./dir&#34;);			// 相对路径
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>File f4 = new Fifle(&#34;../test&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>// 利用File对象获取三种路径
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>f.getPath();			// (String)返回构造方法传入的路径：./Downloads
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>f.getAbsoluttePath/File();	// (String/File)返回绝对路径：类似 D:\Downloads\..\Downloa
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>ds
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>f.getCanonicalPath/File();	// (String/File)返回绝对规范路径：类似 D:\Downloads
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>f.getName();				// String，返回文件或目录的名字
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">15</span>// 文件或目录操作，在调用这些方法的时候才会进行实际的磁盘访问
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">16</span>f.exists();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">17</span>f.isFile();			// 是否是文件
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">18</span>f.diDirectory();	// 是否是目录
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">19</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">20</span>f.canRead();		// boolean
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">21</span>f.canWrite();		// boolean
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">22</span>f.canExecute();		// boolean，目录的话代表是否可以列出其子目录和文件
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">23</span>f.lastModified();	// long，返回上次修改时间
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">24</span>f.setReadable(true);	// 设置可读，同样还有可写，可执行，修改上次修改时间
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">25</span>f.length();			// long，文件字节大小
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">26</span>f.getFreeSpace/TotalSpace/UsableSpace();	// long, 返回空间大小
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">27</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">28</span>f.createNewFile();	// 创建新文件
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">29</span>File f = File.createTempFile(&#34;tmp-&#34;, &#34;.txt&#34;);	// 创建临时文件，指定前缀和后缀，类似 temp-342556345.txt
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">30</span>f.delete();			// 删除文件或目录，删除目录时必须为空
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">31</span>f.deleteOnExit();	// JVM退出时自动删除
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">32</span>f.mkdir();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">33</span>f.mkdirs();			// 级联创建目录
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">34</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">35</span>// 遍历文件和目录
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">36</span>String[] fl = f.list();		// String[]，同上，以String数组返回
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">37</span>File[] fl = f.listFiles();	// File[]，列出所有文件和目录，以File数组形式返回
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">38</span>File[] fl = f.listFiles(
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">39</span>    new FilenameFilter() {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">40</span>        public boolean accept(File dir, String name) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">41</span>            return name.endWith(&#34;.exe&#34;);  // 仅列出该类型文件
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">42</span>        }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">43</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">44</span>);		// 传入一个过滤对象，过滤不必要的文件或目录
+</code></pre></div><p>可以利用Path类来更轻松地创建路径<code>java.nio.file.Path/Paths</code></p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 构造一个路径
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>Path p = Paths.get(&#34;.&#34;, &#34;Downloads&#34;, &#34;temp&#34;);	// Path，返回一个Path对象，其路径为 ./Downloads/temp
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>p = p.toAbsolutePath();		// Path，返回绝对路径
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>p = p.normalize();			// Path，返回标准路径（不是绝对的）；要先 toAbsolutePath()，再 normalize()，才能得到标准的绝对路径
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>// 与File对象相互转换
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>File f = p.toFile();		// File，返回File对象
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>p = f.toPath();				// Path，返回Path对象
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>// 遍历
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>for (Path p : Paths.get(&#34;..&#34;).toAbsolutePath()) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>    System.out.print(p + &#34;, &#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>}	// 构造成 */*/.. 路径，再把其变为绝对路径拆开输出：*, *, ..
+</code></pre></div><h3 id=inputstreamoutputstream>InputStream/OutputStream</h3><p><code>InputSteam/OutputStream</code>：IO流以<em>字节*为单位(byte)，因此也称为字节流；<code>InputStream</code>表示输入流，<code>OutputStream</code>表示输出流，是两种基本的流；*它们的特点是像水流一样单向流动</em>
+它们并不是接口，而是抽象类，是一切输入输出流的超类</p><p><strong>InputStream</strong></p><p>定义了一个重要的抽象方法 <code>pubilc abstract int read() throws IOException;</code>这个抽象方法会读出下一个字节，以int返回(0~255)，读到末尾-1表示</p><p>在调用read()时是阻塞(Blocking)的，即IO未完成之前不会执行后续步骤</p><blockquote><p>实现类：</p><p><code>FileInputStream</code>文件输入流</p><p><code>ByteArrayInputStream</code>在内存中模拟一个输入流，实际上是把<code>byte[]</code>当作<code>InputStream</code>，可以用于测试</p></blockquote><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 实现类 FileInputStream 文件输入流
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>// 打开资源并使用后一定要记得关闭，下面展示了一个最简单的方法，但不是最常用的
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>public void readFile() throws IOException {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>   InputStream input = new FileInputStream(&#34;./text.txt&#34;);   // 传入文件路径
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>   for (;;) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>      int n = input.read();   // 读出下一个byte值
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>      if (n != -1) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>         break;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>      }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>      System.out.println(n);  // 打印byte的值
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>   }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>   input.close();    // 关闭流
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>// 文件输入输出流不管是否成功或失败，都需要及时关闭资源
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">15</span>public void readFile() throws IOException {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">16</span>   InputStream input = null;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">17</span>   try {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">18</span>      input = new FileInputStream(&#34;./text.txt&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">19</span>      for(int n; (n = input.read()) != -1;) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">20</span>         System.out.println(n);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">21</span>      }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">22</span>   } finally {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">23</span>      if (input != null) { input.close(); }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">24</span>   }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">25</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">26</span>// 利用try(resources)来自动关闭资源，常用(JAVA 7引入)
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">27</span>public void readFile() IOException {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">28</span>   try (InputStream input = new FileInputStream(&#34;./text.txt&#34;)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">29</span>      for (int n;(n = input.read()) != -1) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">30</span>         System.out.println(n);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">31</span>      }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">32</span>   }  // 自动关闭，决定于try()里边的对象是否实现了java.lang.AutoClosable接口，里边有finally，并调用close()
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">33</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">34</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">35</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">36</span>// 一次读取一个字节不是高效的办法，利用缓冲可以一次读取多个字节；每次会读满buffer.length个字节，然后清空之前读的字节，记录读到的位置，直到整个文件读完
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">37</span>byte[] buffer = new byte[1000];        // 定义一个buffer，每次读取字节数不会超过这个数组的大小
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">38</span>int read(byte[] b);                    // 读取若干字节填充到byte[]，返回读取的字节数，返回-1表示没有更多的字节了
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">39</span>int read(byte[] b, int off, int len);  // 同时指定偏移量和最大填充数
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">40</span>public void readFile(){		// 缓冲读取完整步骤
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">41</span>    // 利用缓冲读取字节流
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">42</span>    byte[] btBuffer = new byte[1000];
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">43</span>    try (InputStream fs = new FileInputStream(&#34;./text.txt&#34;)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">44</span>        // read()返回的是读取的长度
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">45</span>        for (int n; (n = fs.read(btBuffer)) != -1;){
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">46</span>            // byte数组输出为字符串的时候必须指定(offset, len, charset)
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">47</span>            System.out.println(new String(btBuffer, 0, n, StandardCharsets.UTF_8));
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">48</span>        }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">49</span>    } catch (Exception e) {}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">50</span>    System.out.println();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">51</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">52</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">53</span>// ByteArrayInputStream，模拟输入流
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">54</span>byte[] data = { 72, 101, 108, 108, 111, 33 };		// 构造byte[]
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">55</span>// 从byte[]中输入
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">56</span>try (InputStream input = new ByteArrayInputStream(data)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">57</span>    int n;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">58</span>    while ((n = input.read()) != -1) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">59</span>        System.out.println((char)n);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">60</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">61</span>}
+</code></pre></div><p><strong>OutputStream</strong></p><p>这个抽象类定义了一个重要的方法<code>public abstract void write(int b) throws IOException</code>每次写入一个字节byte</p><p>因为它先把写入的字节放到缓冲区而不是真正的写入，当缓冲区写满时才会把缓冲区写入，它还提供了另外一个方法<code>flush()</code>，利用它可以立即把缓冲区写入到文件，网络等</p><p>在调用<code>close()</code>的时候会自动调用<code>flush()</code></p><p>OutputStream也是阻塞的</p><blockquote><p>实现类：</p><p><code>FileOutputStream</code>文件输出流</p><p><code>ByteArrayOutputStream</code>内存模拟输出流</p></blockquote><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// write()每次写入一个字节，或一个byte[],写入后会覆盖原文件内容
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>byte[] b = new byte[] {&#39;e&#39;, &#39;l&#39;, &#39;l&#39;, &#39;o&#39;};
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>String s = &#34;world!&#34;;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>OutputStream output = new FileOutputStream(&#34;./text.txt&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>output.write(&#39;h&#39;);				// char/int
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>output.write(43);				// 0~255
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>output.write(b, 0, b.length);	// (byte[], offset, len)
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>output.write(s.getBytes(StandardCharsets.UTF_8));
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>output.close();					// 关闭输出流
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>// 同样的，应该把文件的输出流放在try(resources)中，会自动关闭文件
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>try (OutputStream output = new FileOutputStream(&#34;./text.txt&#34;)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>    output.write(&#39;h&#39;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>} catch (Exception e) {}
+</code></pre></div><h3 id=filter模式>Filter模式</h3><p>通过基础组件再叠加各种附加功能组件的模式，叫做Filter模式，或者装饰器(Decorator)模式；如图，各种<code>*InputStream</code>都可以用<code>InputStream</code>来使用，而且仅仅是在基础的数据录入源的基础上增添功能，若每个附加的功能都写一个类，那样会使类的数量大大增</p><p><img src=images/Java%E7%B1%BB%E5%BA%93/Filter-mod.png alt=Filer-mod></p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 编写 FilterInputStream 扩展类
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>public class Main {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>    public static void main(String[] args) throws IOException {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>        byte[] data = &#34;hello, world!&#34;.getBytes(&#34;UTF-8&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>        try (CountInputStream input = new CountInputStream(new ByteArrayInputStream(data))) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>            int n;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>            while ((n = input.read()) != -1) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>                System.out.println((char)n);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>            }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>            System.out.println(&#34;Total read &#34; + input.getBytesRead() + &#34; bytes&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>        }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">15</span>class CountInputStream extends FilterInputStream {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">16</span>    private int count = 0;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">17</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">18</span>    CountInputStream(InputStream in) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">19</span>        super(in);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">20</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">21</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">22</span>    public int getBytesRead() {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">23</span>        return this.count;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">24</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">25</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">26</span>    public int read() throws IOException {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">27</span>        int n = in.read();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">28</span>        if (n != -1) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">29</span>            this.count ++;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">30</span>        }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">31</span>        return n;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">32</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">33</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">34</span>    public int read(byte[] b, int off, int len) throws IOException {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">35</span>        int n = in.read(b, off, len);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">36</span>        this.count += n;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">37</span>        return n;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">38</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">39</span>}
+</code></pre></div><p>操作Zip，它是一种 <code>FilterInputStream</code>；另外<code>JarInputStream</code>派生自 <code>ZipInputStream</code>，是在zip的基础上增加对<code>MANIFEST.MF</code>文件的读写</p><p><img src=images/Java%E7%B1%BB%E5%BA%93/filter-zip.png alt=filter-zip></p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 读取压缩包内容
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>try (ZipInputStream zip = new ZipInputStream(new FileInputStream(&#34;./zip.zip&#34;))) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>    for (ZipEntry entry; (entry = zip.getNextEntry()) != null; ) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>        System.out.print(entry.getName());		// 获取压缩包内部文件或目录的名字
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>        System.out.print(&#34;, &#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>        System.out.print(entry.getTime());		// 获取内容的时间
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>        System.out.print(&#34;, &#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>        System.out.println(entry.getSize());	// 获取压缩前内容的大小
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>} catch (Exception e) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>    //TODO: handle exception
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>// 写入压缩包
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">15</span>try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(...))) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">16</span>    File[] files = ...
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">17</span>    for (File file : files) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">18</span>        zip.putNextEntry(new ZipEntry(file.getName()));
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">19</span>        zip.write(getFileDataAsBytes(file));
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">20</span>        zip.closeEntry();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">21</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">22</span>}
+</code></pre></div><h3 id=读取classpath>读取<code>classpath</code></h3><p>经常读取配置文件，且每次写磁盘路径很麻烦，可以利用<code>classpath</code>而不用关心具体的路径，这样就解决了文件路径依赖。它的路径从<code>/</code>开始，可以包含任意其他类型格式</p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 先获取到当前Class对象，getResourceAsStream()当对象不存在时返回null
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>try (InputStream input = getClass().getResourceAsStream(&#34;/default.properties&#34;)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>    if (input != null) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>        // TODO
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>    }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>// 默认的配置在jar包中，若有用户配置，则读取用户配置
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>Properties props = new Properties();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>props.load(inputStreamFromClassPath(&#34;/default.properties&#34;));
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>props.load(inputStreamFromFile(&#34;./conf.properties&#34;));
+</code></pre></div><h3 id=序列化>序列化</h3><p>序列化就是把java对象编程二进制内容，本质就是一个<code>byte[]</code>，因为序列化后可以把对象保存到文件中，便于传输</p><p>反序列化时由<code>byte[]</code>直接生成对象，不会调用构造方法，但是这个过程中会产生安全问题；而且Java的序列化机制仅适用于Java，要和其他语言交换数据，要使用通用的序列化方法：如 Json，只输出基本类型和String</p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 要实现对象的序列化，必须实现一个特殊接口 java.io.Serializable；它没有定义任何方法，是一个空接口，称这种接口叫做标记接口
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>public interface Serializable {}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>// 序列化需要使用 ObjectOutputStream，它可以写入基本类型如int/boolean，也可以写入String等；还可以写入实现了 Sreierializeable 接口的 Object，写入 Object 需要大量信息，所以内容很大
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>try (ObjectOutputStream output = new ObjectOutputStream(buffer)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>    output.writeInt(12345);			// 写入int:
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>    output.writeUTF(&#34;Hello&#34;);		// 写入String:
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>    output.writeObject(Double.valueOf(123.456));	// 写入Object:
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>System.out.println(Arrays.toString(buffer.toByteArray()));
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>// 反序列化，调用 readObject() 可以直接返回一个对象，必须强制转型；反序列化时是直接构造出 Object，不会调用其构造方法，导致了安全性问题
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>try (ObjectInputStream input = new ObjectInputStream(...)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">15</span>    int n = input.readInt();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">16</span>    String s = input.readUTF();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">17</span>    Double d = (Double) input.readObject();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">18</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">19</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">20</span>// 序列化和反序列化过程中很可能发生一些错误
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">21</span>ClassNotFoundException;		// 反序列化时没有对应的类
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">22</span>InvalidClassException;		// Class不匹配，比如 int 和 long 不匹配
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">23</span>// 所以序列化时允许 Class 定义一个特殊的 ID；静态变量 serialVersionUID(非必须)，用于标识序列化的版本，通常由IDE生成；如果增加或修改了字段，就可以改变其值
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">24</span>public class Person implements Serializable {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">25</span>    private static final long serialVersionUID = 2709425275741743919L;
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">26</span>}
+</code></pre></div><h3 id=readerwriter>Reader/Writer</h3><p>若要读写的是字符(char)，且字符不全是单字节表示的ASCII，那么按照<code>char</code>来读写更方便，这种流称为字符流；其本质是一个能自动编解码的<code>InputStream/OutputStream</code>，会自动地在byte和char之间转换，<em>需指定编码方式</em></p><p><strong>Reader</strong></p><p>操作大概与<code>InputStream</code>类似</p><p><img src=images/Java%E7%B1%BB%E5%BA%93/comparasion-between-inputstream-and-reader.png alt=comparasion-between-inputstream-and-reader></p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050"> 1</span>// 同样的，可以利用缓冲，一次读取多个字符
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 2</span>public void readFile(){
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 3</span>    // 利用缓冲读取字符流
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 4</span>    char[] chBuffer = new char[1000];
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 5</span>    // 构造时传入文件路径和编码方式
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 6</span>    try (Reader rd = new FileReader(&#34;./text.txt&#34;, StandardCharsets.UTF_8)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 7</span>        // read()返回的是读取字符个数
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 8</span>        for (int n;(n = rd.read(chBuffer)) != -1;) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050"> 9</span>            System.out.println(n);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">10</span>            // 字符数组offset, len)
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">11</span>            System.out.println(new String(chBuffer, 0, n));
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">12</span>        }
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">13</span>    } catch (Exception e) {}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">14</span>    System.out.println();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">15</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">16</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">17</span>// 其他实现类
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">18</span>// CharArrayReader，内存中模拟Reader流，实际上是一个char[]
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">19</span>try (Reader reader = new CharArrayReader(&#34;Hello&#34;.toCharArray())) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">20</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">21</span>// StringReader， 可以直接把String当作输入流，和CharArrayReader几乎一样
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">22</span>try (Reader reader = new StringReader(&#34;Hello&#34;)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">23</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">24</span>
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">25</span>// InputStream和Reader：Reader内部有一个InputStream，它先把数据以byte读入InputStream，再以特定的编码转换为char；可以手动转换，利用InputStreamReader
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">26</span>InputStream input = new FileInputStream(&#34;src/readme.txt&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">27</span>Reader reader = new InputStreamReader(input, &#34;UTF-8&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">28</span>// 简化代码，构造Reader时传入InputStream，这实际上时FileReader的一种实现方式
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">29</span>try (Reader reader = new InputStreamReader(new FileInputStream(&#34;src/readme.txt&#34;), &#34;UTF-8&#34;)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">30</span>    // TODO:
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">31</span>}
+</code></pre></div><h3 id=printstreamprintwriter>PrintStream/PrintWriter</h3><p><strong>PrintStream</strong></p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050">1</span>PrintStream`是一种`FilterOutputStream`，总是以byte数据输出；额外提供了一些写入各种数据(int, boolean, String, Object…)的方法`print()/println()`，除了提供了额外的方法外还有个特点就是不会抛出`IOException
+</code></pre></div><blockquote><p><code>System.out.print</code>是系统默认提供的<code>PrintStream</code>， 表示标准输出</p><p><code>System.err</code>是系统默认提供的标准错误输出</p></blockquote><p><strong>PrintWriter</strong></p><p><code>PrintWriter</code>扩展了<code>Writer</code>接口，输出的是char数据，使用方法与<code>PrintStream</code>几乎一样</p><div class=highlight><pre style=color:#93a1a1;background-color:#002b36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback><span style="margin-right:.4em;padding:0 .4em;color:#495050">1</span>StringWriter buffer = new StringWriter();
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">2</span>try (PrintWriter pw = new PrintWriter(buffer)) {
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">3</span>    pw.println(&#34;Hello&#34;);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">4</span>    pw.println(12345);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">5</span>    pw.println(true);
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">6</span>}
+<span style="margin-right:.4em;padding:0 .4em;color:#495050">7</span>System.out.println(buffer.toString());
+</code></pre></div><p><a href=https://www.liaoxuefeng.com/>参考自廖雪峰的教程</a></p></div><div class=post-tags><nav class="nav tags"><ul class=flat><li><a href=/tags/java>java</a></li></ul></nav></div></div><div class="footer wrapper"><nav class=nav><div><a href=https://github.com/vividvilla/ezhil>Ezhil theme</a> | Built with <a href=https://gohugo.io>Hugo</a></div></nav></div><script>feather.replace()</script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.13.9/dist/katex.min.css integrity=sha384-r/BYDnh2ViiCwqZt5VJVWuADDic3NnnTIEOv4hOh05nSfB6tjWpKmn1kUHOVkMXc crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.9/dist/katex.min.js integrity=sha384-zDIgORxjImEWftZXZpWLs2l57fMX9B3yWFPN5Ecabe211Hm5ZG/OIz2b07DYPUcH crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.13.9/dist/contrib/auto-render.min.js integrity=sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl crossorigin=anonymous onload=renderMathInElement(document.body)></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1}]})})</script></body></html>
