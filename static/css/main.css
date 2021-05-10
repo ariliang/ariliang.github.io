@@ -1,12 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.loli.net/css2?family=Noto+Sans+SC:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.loli.net/css2?family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.loli.net/css?family=Ubuntu:300,400,300italic,400italic|Raleway:200,300');
 
 body {
     font-family: "ubuntu", sans-serif, "Noto Sans SC";
     font-weight: 400;
-    color: #333;
+    color: #666;
     line-height: 1.6;
     font-size: 16px;
+
+    background-color: #fafafa;
 }
 
 a, a:hover {
@@ -185,7 +188,10 @@ ul {
     margin-bottom: 0;
     margin-top: 0;
     padding: 20px;
+    border-radius: 5px;
     /* background-color: transparent !important; */
+
+    /* background-color: #666 !important; */
 }
 
 .highlight {
@@ -194,7 +200,9 @@ ul {
 }
 
 pre code {
-  display: inline-block;
+    display: inline-block;
+    border: none;
+    background-color: inherit;
 }
   
 
@@ -420,3 +428,10 @@ table th, table td {
         margin-top: 10px;
     }
 }
+
+/* 侧边栏toc */
+/* @media only screen and (max-width: 1224px) {
+    .post-toc {
+        display: none;
+    }
+} */
