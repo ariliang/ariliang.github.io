@@ -14,13 +14,12 @@ tags: [java]
 
 1. 实际上字符串内部是用`char[]`来表示的
 
-   > 比如`String s = new String(new char[] {'H', 'e', 'l', 'l', 'o', '!'});`
-   >
-   > 它的内部的字段定义是`private final char[]`，所以字符串对象是恒定不变的
+> 比如`String s = new String(new char[] {'H', 'e', 'l', 'l', 'o', '!'});`
+> 它的内部的字段定义是`private final char[]`，所以字符串对象是恒定不变的
 
 1. 字符串比较应该利用`equals()`而不是`==`，因为字符串是引用类型，`==`比较的是引用值
 
-```
+```java
 // 比较内容，利用==比较也为true，是因为编译器会自动把相同的字符串当作一个对象放入常量池，自然引用"hello"和引用s的引用值是相等的
 String s = "hello";
 boolean isEqual1 = "hello".equals(s) ? true : false;	// true
@@ -33,7 +32,7 @@ boolean isEqual = "hello".toUpperCase() == "s" ? true : false;	// false
 
 1. 常用方法
 
-```
+```java
 "Hello".equalsIgnoreCase("Hello");	// true，忽略大小写比较
 "Hello".contains("llo");			// true，是否包含某个子串，方法参数是CharSequence
 
@@ -75,27 +74,27 @@ System.out.println(s);		// "Hello"，修改了char[]后s并不会改变，因为
 
 1. 字符编码
 
-   > 1. ASCII只有1个字节编码的范围是0~~127(0000 0000~~0111 1111)，高位始终为0
-   > 2. GB2312采用2字节，第一个高位始终为1以便和ASCII码区分(1000 0000 0000 0000 ~ 1111 1111 1111)
-   > 3. Unicode编码使用两个或更多字节，英文字符就是简单的在前面加00，因为这样会浪费空间，就出现了UTF-8，把固定长度的Unicode编码编程1~4字节的变长编码
-   > 4. UTF-8依靠高字节来确定一个字符究竟是几个字节，传输中容错能强，常用作传输编码
-   > 5. Java的String和char在内存中总是以Unicode表示
+> 1. ASCII只有1个字节编码的范围是0~127(0000 0000~0111 1111)，高位始终为0
+> 2. GB2312采用2字节，第一个高位始终为1以便和ASCII码区分(1000 0000 0000 0000 ~ 1111 1111 1111)
+> 3. Unicode编码使用两个或更多字节，英文字符就是简单的在前面加00，因为这样会浪费空间，就出现了UTF-8，把固定长度的Unicode编码编程1~4字节的变长编码
+> 4. UTF-8依靠高字节来确定一个字符究竟是几个字节，传输中容错能强，常用作传输编码
+> 5. Java的String和char在内存中总是以Unicode表示
 
-   ```
-      // char类型实际上是两个字节的Unicode编码，可以手动把字符串转换为其他编码，转换后不再是char类型，而是byte型数组
-      // 转换为byte[]类型的时候优先考虑UTF-8
-      byte[] b1 = "Hello".getBytes();		// 按ISO8859-1编码转换，不推荐
-      byte[] b2 = "Hello".getBytes("UTF-8");		// 按UTF-8转换
-      byte[] b3 = "Hello".getBytes("GBK");		// 按GBK转换
-      byte[] b4 = "Hello".getBytes(StandardCharsets.UTF_8);	// 按UTF-8转换
-      
-      // 将已知的byte型数组转化为String
-      String s1 = new String(b3, "GBK");
-   String s2 = new String(b4, StandardCharsets.UTF_8);
-      
-      // 早期的String内部由char[]实现，而现在内部是byte[]，因为许多情况下只有ASCII内容，而使用char[]会浪费内存，利用byte[]能够存储一个字节，更节约
-      private final char[] value;  -->  private final byte[] value;
-   ```
+```java
+// char类型实际上是两个字节的Unicode编码，可以手动把字符串转换为其他编码，转换后不再是char类型，而是byte型数组
+// 转换为byte[]类型的时候优先考虑UTF-8
+byte[] b1 = "Hello".getBytes();		// 按ISO8859-1编码转换，不推荐
+byte[] b2 = "Hello".getBytes("UTF-8");		// 按UTF-8转换
+byte[] b3 = "Hello".getBytes("GBK");		// 按GBK转换
+byte[] b4 = "Hello".getBytes(StandardCharsets.UTF_8);	// 按UTF-8转换
+
+// 将已知的byte型数组转化为String
+String s1 = new String(b3, "GBK");
+String s2 = new String(b4, StandardCharsets.UTF_8);
+
+// 早期的String内部由char[]实现，而现在内部是byte[]，因为许多情况下只有ASCII内容，而使用char[]会浪费内存，利用byte[]能够存储一个字节，更节约
+private final char[] value;  -->  private final byte[] value;
+```
 
 ### StringBuilder
 
@@ -106,7 +105,7 @@ System.out.println(s);		// "Hello"，修改了char[]后s并不会改变，因为
 
 方法列表
 
-```
+```java
 // toString();	将内容输出为字符串
 // equals();	判断是否逻辑相等
 // hashCode();	计算instance的hash值
@@ -116,7 +115,7 @@ System.out.println(s);		// "Hello"，修改了char[]后s并不会改变，因为
 
 ### Arrays
 
-```
+```java
 // 将数值类型转化为字符串
 Arrays.toString();
 Arrays.deepToString();	// 输出多维数组为字符串
@@ -133,31 +132,31 @@ Arrays.sort();
 
 2. IO分为同步和异步，分别在包`java.io`和`java.nio`中；同步指必须在IO结束后才能继续后续步骤，异步指只是发出IO请求，立刻执行后续步骤
 
-   ```
-   // 同步IO
-   import java.io;
-   
-   /* 
-    * 抽象类
-    * 	InputStream/OutputStream, Reader/Writer
-    * 实现类
-    * 	FileInputStream/FileOutputStream, FileReader/FileWriter
-    */
-   
-   // 异步IO
-   import java.nio
-   
-   /*
-    *	Path/Paths
-    *
-    */
-   ```
+```java
+// 同步IO
+import java.io;
+
+/* 
+* 抽象类
+* 	InputStream/OutputStream, Reader/Writer
+* 实现类
+* 	FileInputStream/FileOutputStream, FileReader/FileWriter
+*/
+
+// 异步IO
+import java.nio
+
+/*
+*	Path/Paths
+*
+*/
+```
 
 ### File/Path对象
 
 利用`File`来操作文件和目录，`File`既可以表示文件，也可以表示目录；构造`File`时只是构造对象，不会进行任何IO操作，所以不会报错。而在调用的时候，才会有磁盘操作
 
-```
+```java
 // 要构造一个File对象需要传入文件/目录路径，可以是绝对路径，也可以是相对路径
 File f1 = new File("D:\\Downloads");	// Win下，绝对路径
 File f2 = new File("/home/user");		// unix下
@@ -206,7 +205,7 @@ File[] fl = f.listFiles(
 
 可以利用Path类来更轻松地创建路径`java.nio.file.Path/Paths`
 
-```
+```java
 // 构造一个路径
 Path p = Paths.get(".", "Downloads", "temp");	// Path，返回一个Path对象，其路径为 ./Downloads/temp
 p = p.toAbsolutePath();		// Path，返回绝对路径
@@ -239,7 +238,7 @@ for (Path p : Paths.get("..").toAbsolutePath()) {
 >
 > `ByteArrayInputStream`在内存中模拟一个输入流，实际上是把`byte[]`当作`InputStream`，可以用于测试
 
-```
+```java
 // 实现类 FileInputStream 文件输入流
 // 打开资源并使用后一定要记得关闭，下面展示了一个最简单的方法，但不是最常用的
 public void readFile() throws IOException {
@@ -319,7 +318,7 @@ OutputStream也是阻塞的
 >
 > `ByteArrayOutputStream`内存模拟输出流
 
-```
+```java
 // write()每次写入一个字节，或一个byte[],写入后会覆盖原文件内容
 byte[] b = new byte[] {'e', 'l', 'l', 'o'};
 String s = "world!";
@@ -342,7 +341,7 @@ try (OutputStream output = new FileOutputStream("./text.txt")) {
 
 ![Filer-mod](images/Java类库/Filter-mod.png)
 
-```
+```java
 // 编写 FilterInputStream 扩展类
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -390,7 +389,7 @@ class CountInputStream extends FilterInputStream {
 
 
 
-```
+```java
 // 读取压缩包内容
 try (ZipInputStream zip = new ZipInputStream(new FileInputStream("./zip.zip"))) {
     for (ZipEntry entry; (entry = zip.getNextEntry()) != null; ) {
@@ -419,7 +418,7 @@ try (ZipOutputStream zip = new ZipOutputStream(new FileOutputStream(...))) {
 
 经常读取配置文件，且每次写磁盘路径很麻烦，可以利用`classpath`而不用关心具体的路径，这样就解决了文件路径依赖。它的路径从`/`开始，可以包含任意其他类型格式
 
-```
+```java
 // 先获取到当前Class对象，getResourceAsStream()当对象不存在时返回null
 try (InputStream input = getClass().getResourceAsStream("/default.properties")) {
     if (input != null) {
@@ -439,7 +438,7 @@ props.load(inputStreamFromFile("./conf.properties"));
 
 反序列化时由`byte[]`直接生成对象，不会调用构造方法，但是这个过程中会产生安全问题；而且Java的序列化机制仅适用于Java，要和其他语言交换数据，要使用通用的序列化方法：如 Json，只输出基本类型和String
 
-```
+```java
 // 要实现对象的序列化，必须实现一个特殊接口 java.io.Serializable；它没有定义任何方法，是一个空接口，称这种接口叫做标记接口
 public interface Serializable {}
 
@@ -478,7 +477,7 @@ public class Person implements Serializable {
 
 ![comparasion-between-inputstream-and-reader](images/Java类库/comparasion-between-inputstream-and-reader.png)
 
-```
+```java
 // 同样的，可以利用缓冲，一次读取多个字符
 public void readFile(){
     // 利用缓冲读取字符流
@@ -516,7 +515,7 @@ try (Reader reader = new InputStreamReader(new FileInputStream("src/readme.txt")
 
 **PrintStream**
 
-```
+```java
 PrintStream`是一种`FilterOutputStream`，总是以byte数据输出；额外提供了一些写入各种数据(int, boolean, String, Object…)的方法`print()/println()`，除了提供了额外的方法外还有个特点就是不会抛出`IOException
 ```
 
@@ -528,7 +527,7 @@ PrintStream`是一种`FilterOutputStream`，总是以byte数据输出；额外�
 
 `PrintWriter`扩展了`Writer`接口，输出的是char数据，使用方法与`PrintStream`几乎一样
 
-```
+```java
 StringWriter buffer = new StringWriter();
 try (PrintWriter pw = new PrintWriter(buffer)) {
     pw.println("Hello");

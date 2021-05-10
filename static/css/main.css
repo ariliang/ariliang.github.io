@@ -1,5 +1,5 @@
 body {
-    font-family: "ubuntu", sans-serif, "dengxian";
+    font-family: "ubuntu", sans-serif, "heiti";
     font-weight: 400;
     color: #333;
     line-height: 1.6;
@@ -63,10 +63,9 @@ textarea {
 blockquote {
     margin-left: 1rem;
     font-style: italic;
-    font-size: 1.0rem;
-    font-family: Georgia,bitstream charter,serif, "dengxian";
+    font-size: 0.92rem;
     border-left: 3px solid;
-    border-color: #a00;
+    border-color: rgba(170, 0, 0, 0.5);
     padding-left: 10px;
 }
 
@@ -89,10 +88,10 @@ a:hover {
 }
 
 h1,h2,h3,h4,h5,h6 {
-    font-family: raleway,sans-serif, "dengxian";
+    /* font-family: raleway,sans-serif, "heiti"; */
     line-height: 1.2;
     color: #333;
-    font-weight: 200;
+    font-weight: 400;
 }
 
 h1 {
@@ -183,7 +182,7 @@ ul {
     margin-bottom: 0;
     margin-top: 0;
     padding: 20px;
-    background-color: transparent !important;
+    /* background-color: transparent !important; */
 }
 
 .highlight {
