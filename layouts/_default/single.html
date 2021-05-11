@@ -10,13 +10,17 @@
 			<div class="meta">Posted at &mdash; {{ dateFormat "Jan 2, 2006" .Date }}{{ if .Draft }} <span class="draft-label">DRAFT</span> {{ end }}</div>
 		</div>
 
-		{{ if .Site.Params.toc | default false }}
-		{{ partial "toc.html" . }}
-		{{ end }}
-
-		<!-- <div style="position: fixed; left:20px;max-width:300px; overflow:auto; top: 100px; width: 10vw; bottom:50px">
+		<div class="mobiletoc">
+			{{ if .Site.Params.toc | default false }}
 			{{ partial "toc.html" . }}
-		</div> -->
+			{{ end }}
+		</div>
+
+		<div class="desktoptoc">
+			{{ if .Site.Params.toc | default false }}
+			{{ partial "toc.html" . }}
+			{{ end }}
+		</div>
 
 		<div class="markdown">
 			{{ .Content }}

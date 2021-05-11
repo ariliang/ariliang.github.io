@@ -1,6 +1,6 @@
 <div class="post-toc">
     <div class="toc-header">CATALOG</div>
-    {{- $headers := findRE "<h[2-4].*?>(.|\n])+?</h[2-4]>" .Content -}}
+    {{- $headers := findRE "<h[2-3].*?>(.|\n])+?</h[2-3]>" .Content -}}
     {{ .Scratch.Set "last_level" -1 }}
     {{/* at least one header to link to */}}
     {{- $has_headers := ge (len $headers) 1 -}}
@@ -11,7 +11,7 @@
             {{- $base := ($.Page.File.LogicalName) -}}
             {{- $anchorId := ($header | plainify | htmlUnescape | anchorize) -}}
             {{- $href := delimit (slice $base $anchorId) "#" | string -}}
-            {{- range findRE "[2-4]" . 1 -}}
+            {{- range findRE "[2-3]" . 1 -}}
                 {{- $next_level := (int .) -}}
                 {{- if eq $last_level -1 -}}
                     <ul class="toc-h{{ . }}">
