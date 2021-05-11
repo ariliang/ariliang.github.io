@@ -189,7 +189,7 @@ ol {
 }
 
 .post ul li {
-    margin-bottom: 10px;
+    line-height: 1.5;
 }
 
 .post ul li p {
@@ -323,6 +323,7 @@ pre code {
 
 .post .post-toc {
     line-height: 0.8;
+    font-size: 0.9em;
 }
 
 .post .draft-label {
@@ -440,9 +441,13 @@ table th, table td {
     }
 }
 
+.post-toc ul{
+    list-style: disc;
+}
+
 /* 侧边栏toc */
 /* desktop view */
-@media only screen and (min-width: 1224px) {
+@media only screen and (min-width: 1224px) and (max-width: 1400px) {
     .desktoptoc {
         position: fixed;
         right:50px;
@@ -452,17 +457,16 @@ table th, table td {
         width: 40vw;
         bottom:50px;
     }
+}
 
-    .post .post-toc {
-        font-size: 0.9em;
-    }
-
-    .post ul{
-        list-style: disc;
-        line-height: 1.0;
-    }
-
-    .post ul li {
-        margin: none;
+@media only screen and (min-width: 1401px) {
+    .desktoptoc {
+        position: fixed;
+        right:100px;
+        max-width:200px;
+        overflow: auto;
+        top: 75px;
+        width: 40vw;
+        bottom:50px;
     }
 }
