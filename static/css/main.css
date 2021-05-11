@@ -441,18 +441,6 @@ table th, table td {
 }
 
 /* 侧边栏toc */
-/* @media only screen and (max-width: 1224px) { */
-/* mobile view */
-@media only screen and (max-width: 1224px) {
-    .desktoptoc {
-        display: none;
-    }
-
-    .mobiletoc {
-        display: block !important;
-    }
-}
-
 /* desktop view */
 @media only screen and (min-width: 1224px) {
     .desktoptoc {
@@ -481,9 +469,5 @@ table th, table td {
     a:hover {
         color: orange;
         text-decoration: none;
-    }
-
-    .mobiletoc {
-        display: none;
     }
 }
