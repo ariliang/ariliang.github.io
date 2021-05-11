@@ -96,7 +96,8 @@ a,a:hover {
 }
 
 a:hover {
-    text-decoration: underline
+    text-decoration: None;
+    color: orange;
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -463,10 +464,5 @@ table th, table td {
 
     .post ul li {
         margin: none;
-    }
-
-    a:hover {
-        color: orange;
-        text-decoration: none;
     }
 }
