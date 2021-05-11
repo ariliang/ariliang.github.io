@@ -8,7 +8,7 @@ tags: [GPT2, Dialogue System, NLP]
 
 ## 简介
 
-### NLP一般过程
+### NLP一般方法
 
 自从预训练模型BERT(Bidirectional Encoder Representation for Transformer)诞生后，当前大多采用大规模通用语料如网页、维基百科，来训练预训练模型(Pretrained Model)，然后再根据下游任务对预训练模型进行精调(Fine Tuning)，这样的方式在许多任务上的表现非常好。
 
@@ -68,7 +68,7 @@ GPT2是一种自回归(Auto Regression, AR)模型，也称CLM(Casual Language Mo
 
 ## 任务理解
 
-我们可以对一个历史对话进行拼接(Concatenate)，形成一个长句子输入进模型，模型每次输出一个字；再添加到长句子末尾，再输入进模型。如此往复直到达到最大长度max_len，或者结束遇到\<eos\>，如：
+我们可以对一个历史对话进行拼接(Concatenate)，形成一个长句子输入进模型，模型每次输出一个字；再添加到长句子末尾，再输入进模型。如此往复直到达到最大长度max_len，或者结束遇到\<eos\>，这个项目中是\<sep\>。如：
 
 ```text
 今天好点了吗？
@@ -106,7 +106,7 @@ convb
 
 [Ref: OpenAI GPT2](https://huggingface.co/transformers/model_doc/gpt2.html#)
 
-### 项目结构
+### 项目结构与流程
 
 因为代码里边参数的注释非常详细了，所以先只介绍整个大概的流程，以下是整个项目的结构
 
@@ -148,10 +148,89 @@ project
 └── train.py                        # 训练
 ```
 
+**基本流程**
 
-### 输入
+训练：
 
-### 输出
+1. 先将数据集构造成[上述]({{< relref "基于GPT2对话系统实现#训练集" >}})形式，训练集和测试集分别为`data/train.txt`和`data/test.txt`
+2. 运行`./train.py`先进行预处理，它会把原始文本token化后转换为id，保存到`data/train_tokenized.txt`；接下来训练的时候会直接读取这个文件，加快了下一次的过程
+3. `./train.py`会加载预训练模型`pytorch_model.bin`，可以自动下载或者手动下载
+4. 将数据集构造成`dataloader`，其实就是将数据成批地输入模型，这个批处理大小由`batch_size`控制
+5. 进行训练的过程，程序会计算每一个batch的`loss`，然后进行反向传播；记录`loss`的变化情况，周期性的选择的模型进行保存，保存在`output/dialogue_model`，这里是每个`epoch`保存一次
+
+测试:
+
+1. 运行`test.py`，同样也会预处理保存在`data/test_tokenized.txt`
+2. `test.py`会加载训练好的模型，具体使用哪个模型可以在`config/args.py`里配置
+3. 然后根据概率生成对应结果，保存在`output/sample/output_test.txt`中
+
+交互模式：
+
+1. 运行`interact.py`，会打开一个命令行，输入进一句话，系统会进行回复
+2. `ctrl+c`退出
+
+## 实验
+
+### 训练
+
+**输入**
+
+数据集预处理过后，生成的token id文件`data/train_tokenized.txt`如下:
+
+```text
+# data/train_tokenized.txt
+101 872 1962 8024 5496 ... 7270 102
+101 5496 2094 5515 3698 ...  511 102
+...
+```
+
+101代表`[CLS]`，102代表`[SEP]`，这些都在字典里可以找到`vocab_small.txt`。每一行代表一个对话历史，最后这些`input_ids`会被feed进模型，参与计算
+
+输入`input_ids`的维度为`(batch_size, max_len, vocab_size)`，`max_len`应当包括*对话历史本身的长度*加上*生成的句子长度*和填充，即$len(his) + len(gen) \le max\\_len$，所以超过`max_len`需要对其截断
+
+**输出**
+
+模型的输出就是预测出的`prediction_score`，用`logits`表示；n个token生成n个`hidden prediction_score`。用`logits[0, n-2]`去跟`labels[1, n-1]`做计算`CrossEntropy`，**得到`loss`值**。
+
+再比较生成与原始句子之间预测正确的个数，**得到精度**$accuracy = \frac{correct}{num\\_token}$
+
+> 忽略`<pad>`，不对其计算`crossEntropy`与`accuracy`
+
+维度：
+
+- logits: `(batch_size, max_len, vocab_size)`，模型得出的`prediction_score`
+- labels: `(batch_size, max_len, vocab_size)`，也就是原句子
+
+比如：
+
+```python
+n = 6
+labels = "今天天气真好"     # 原始对话
+          ↓↗
+logits = "天天生真好啊"     # 预测的结果，除了最后一个字
+
+# labels里第一个字"今"预测出下一个字为logits第一个"天"
+# 预测出的"天"跟labels里'今'的下一个字比较
+
+shift_logits = logits[0: n-2] # "天天生真"
+shift_labels = labels[1: n-1] # "天天气真"
+
+### loss
+loss = CrossEntropy(shift_logits, shift_labels)
+
+### accuracy
+correct = 3     # 如上述例子
+num_token = len(shift_labels)
+accuracy = correct/num_token    # 0.75
+```
+
+### 测试
+
+也就是预测的过程
+
+1. 针对每一个对话，输出进模型，得到下一个字`prediction_score`。即`logits[ , -1, ]`，长度为`vocab_size`，随后对其进行[采样]({{< relref "基于GPT2对话系统实现#采样方式" >}})。
+2. 将采样的结果添加到对话末尾，重复 1.
+3. 直到达到预设的最大长度`max_len`，或者采样是`<sep>`，则结束
 
 ### 采样方式
 

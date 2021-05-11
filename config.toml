@@ -9,6 +9,9 @@ pygmentscodefencesguesssyntax = true
 
 summaryLength = 10
 
+[permalinks]
+  posts = "/:year/:month/:title/"
+
 [params]
     mode = "auto"
     math = true
