@@ -57,9 +57,9 @@ weight = 4
     anchorLineNos = false
 
   [markup.tableOfContents]
-    endLevel = 4
-    ordered = false
     startLevel = 2
+    endLevel = 3
+    ordered = false
 
 
 [[params.social]]
