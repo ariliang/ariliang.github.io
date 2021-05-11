@@ -18,12 +18,12 @@ tags: [GPT2, Dialogue System, NLP]
 
 1. 预训练模型普遍采用编码解码(Encoder-Decoder)模式，这也是一个广泛的说法。广义上指对数据$x$进行处理变成了中间态$z$：如把原始数据做Embedding、对数据处理后得到hidden output，相当于对数据进行了编码；然后对这些编码结果再进行处理，变成了我们想要的结果$y$，这类似与解码的过程。
 2. 狭义上指使用了Transformer结构的模型，它包含了具体的Encoder跟Decoder部分，而BERT使用了Encoder部分，GPT使用了Decoder部分，所以上面说BERT含义大概是是双向的Transformer的Encoder表示
-{{< figure alt="transformer" src="images/基于GPT2对话系统实现/transformer-encoder-decoder.png" width="75%" >}}
+{{<figure title="Fig.1 The Transformer" alt="transformer" src="images/基于GPT2对话系统实现/transformer-encoder-decoder.png" width="75%">}}
 3. Transformer采用注意力机制(Attention)，所谓注意力机制就是在一个句子中，基本的单位如字、词对另外的字或词是否可见、是否能注意到其它字词，相互是否能得到一个影响，如用概率大小来表示。注意到Encoder跟Decoder的Attention的差别
-{{< figure alt="encoder" src="images/基于GPT2对话系统实现/transformer-encoder-block-2.png" width="75%" >}}
-{{< figure alt="decoder" src="images/基于GPT2对话系统实现/transformer-decoder-block-2.png" width="75%" >}}
+{{<figure title="Fig.2 Encoder" alt="Encoder" src="images/基于GPT2对话系统实现/transformer-encoder-block-2.png" width="75%">}}
+{{<figure title="Fig.3 Decoder" alt="Decoder" src="images/基于GPT2对话系统实现/transformer-decoder-block-2.png" width="75%">}}
 4. BERT使用了Self-Attention，而GPT使用了遮罩的注意力机制(Masked Self-Attetion)，只有后面的能注意到前面的
-{{< figure alt="self-attention" src="images/基于GPT2对话系统实现/self-attention-and-masked-self-attention.png" width="75%" >}}
+{{<figure title="Fig.4 Self-Attention" alt="Self-Attention" src="images/基于GPT2对话系统实现/self-attention-and-masked-self-attention.png" width="75%">}}
 
 [Ref: Illustrated GPT2](http://jalammar.github.io/illustrated-gpt2/)
 
@@ -157,12 +157,12 @@ project
 
 将一个长句子输入进模型后，会得到下一个字的概率，有不同的策略对这个字进行采样(Sampling)。若想要生成的句子最符合训练集情况，就选择概率最大，但这样会生成重复的句子，对于聊天机器人可能不太好；想要生成的句子具有多样性，可选取其他采样方式。
 
-**Greedy Search**，简单地取最大概率
-**Top-K**，选取前k个概率最大的样本，再随机取一个样本
-**Top-P**，选取概率超过一定阈值的样本，如0.9，再从这些样本中随机取一个
-**Beam Seach**，设置一个N值代表N个样本，对当前生成的选择概率最大的N个样本；在下一轮生成时，计算这N个样本与词表所有词组合后的概率值，再选择概率前N个值，如此往复，最后生成概率最大的N个句子
-**Temperture**，$p_j \propto \frac{\exp(p_j / T)}{\sum_i \exp(p_i/T)}$，通过调节Temperture可对全体概率进行平滑或者锐化
-**Penalty**，每次生成一个词后，我们可以添加一个惩罚项，对这个词的概率进行处理，使其减少重复，如 $p_j = \frac{\exp(p_j / T / Penalty)}{\sum_i \exp(p_i/T/Penalty)}, \text{ where i, j has been sampled}$
+- **Greedy Search**，简单地取最大概率
+- **Top-K**，选取前k个概率最大的样本，再随机取一个样本
+- **Top-P**，选取概率超过一定阈值的样本，如0.9，再从这些样本中随机取一个
+- **Beam Seach**，设置一个N值代表N个样本，对当前生成的选择概率最大的N个样本；在下一轮生成时，计算这N个样本与词表所有词组合后的概率值，再选择概率前N个值，如此往复，最后生成概率最大的N个句子
+- **Temperture**，$p_j \propto \frac{\exp(p_j / T)}{\sum_i \exp(p_i/T)}$，通过调节Temperture可对全体概率进行平滑或者锐化
+- **Penalty**，每次生成一个词后，我们可以添加一个惩罚项，对这个词的概率进行处理，使其减少重复，如 $p_j = \frac{\exp(p_j / T / Penalty)}{\sum_i \exp(p_i/T/Penalty)}$, where $i, j$ has been sampled
 
 > 这些采样方式通常可以组合，比如先选取Top-P取概率超过一定阈值的样本，再使用Top-K取前K个，再随机选取某个样本
 

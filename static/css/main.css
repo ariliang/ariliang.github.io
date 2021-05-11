@@ -56,6 +56,10 @@ figure {
     text-align: center;
 }
 
+figcaption h4{
+    font-size: 1em
+}
+
 fieldset {
     border: 0;
     margin: 0;
