@@ -69,3 +69,8 @@ weight = 4
 name = "Github"
 icon = "github"
 url = "https://github.com/ariliang"
+
+[[params.social]]
+name = "Email"
+icon = "mail"
+url = "mailto://ariliangx@gmail.com"
